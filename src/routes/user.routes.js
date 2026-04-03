@@ -16,6 +16,11 @@ router.route("/register").post(
             maxCount: 1
         }
     ]),
-    registerUser)
+registerUser)
+
+router.route("/login").post(loginUser)
+
+//secured route, only accessible to authenticated users
+router.route("/logout").post(verifyJWT, logoutUser)    
 
 export default router;
