@@ -11,7 +11,7 @@ class ApiError extends Error {
         this.message = message;
         this.success=false;
         this.errors = errors;
-
+        //can avoid this part
         if (stack) {
             this.stack = stack;
         }
