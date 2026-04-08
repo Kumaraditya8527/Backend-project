@@ -10,7 +10,7 @@ app.use(cors({
 
 app.use(express.json({limit: '16kb'}))// For parsing application/json with a size limit of 16kb
 app.use(express.urlencoded({extended: true, limit: '16kb'}))// For parsing application/x-www-form-urlencoded
-app.use(express.static('public'))// For serving static files from the 'public' directory
+app.use(express.static('public'))// For serving static files from the 'public' directory(store data on the server)
 app.use(cookieParser())// For parsing cookies
 
 //import routes
