@@ -5,13 +5,10 @@ import { loginUser } from "../controllers/user.controller.js";
 import { logoutUser } from "../controllers/user.controller.js";
 import {verifyJWT}  from "../middlewares/auth.middleware.js";
 import { refreshAccessToken } from "../controllers/user.controller.js";
-import { changePassword } from "../controllers/user.controller.js";
-import { getCurrentUser } from "../controllers/user.controller.js";
-import { updateAccountDetails } from "../controllers/user.controller.js";
-import { updateUserAvatar } from "../controllers/user.controller.js";
-import { updateUserCoverImage } from "../controllers/user.controller.js";
-import { getUserChannelProfile } from "../controllers/user.controller.js";
-import { getWatchHistory } from "../controllers/user.controller.js";
+
+
+
+
 
 const router = Router();
 

@@ -5,7 +5,7 @@ const storage = multer.diskStorage({
         cb(null, "./public/temp"); // specify the directory where uploaded files will be stored
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname); // specify the filename for uploaded files
+        cb(null,file.originalname); // specify the filename for uploaded files
     }
 });
 

@@ -22,24 +22,24 @@ const generateAccessAndRefreshTokens =async (userId) => {
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-    const {username, email, fullname, password} = req.body;
+    const {username, email, fullname, password} = req.body; //destructure the required fields from the request body, which are expected to be sent by the client when registering a new user
     console.log("email:", email);
 
-    if([username, email, fullname, password].some((field)=>
+    if([username, email, fullname, password].some((field)=>  //check if any of the required fields are missing or empty, and if so, throw a 400 Bad Request error with a message indicating that all fields are required
         field?.trim() === "")
     ){
         throw new ApiError(400, "All fields are required")
     }
 
-    const existeduser = await User.findOne({
+    const existeduser = await User.findOne({ //check if a user with the same email or username already exists in the database, and if so, throw a 409 Conflict error with a message indicating that a user already exists with the provided email or username
         $or:[{ email },{ username }]
     })
     if(existeduser){
         throw new ApiError(409, "User already exists with this email or username")
     }
 
-    const avatarPath = req.files?.avatar?.[0]?.path;
-    const coverImagePath = req.files?.coverImage?.[0]?.path;
+    const avatarPath = req.files?.avatar?.[0]?.path; //access the uploaded avatar image file from the request object, which is expected to be sent by the client as part of a multipart/form-data request when registering a new user. The code uses optional chaining to safely access the nested properties of the request object and retrieve the path of the uploaded avatar image file
+    const coverImagePath = req.files?.coverImage?.[0]?.path; //access the uploaded cover image file from the request object, which is expected to be sent by the client as part of a multipart/form-data request when registering a new user. The code uses optional chaining to safely access the nested properties of the request object and retrieve the path of the uploaded cover image file
 
     if(!avatarPath){
         throw new ApiError(400, "Avatar image is required")
@@ -52,7 +52,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "avatar image is required")
     }
 
-    const user=await User.create({
+    const user=await User.create({//create a new user document in the database using the User model, with the provided username, email, fullname, password, and the URLs of the uploaded avatar and cover images. The create method is used to save the new user document to the database
         fullname,
         avatar:avatar.url,
         coverImage: coverImage?.url || "",
@@ -61,7 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
         username: username.toLowerCase()
     })
 
-    const createdUser=await User.findById(user._1d).select(
+    const createdUser=await User.findById(user._id).select(//after creating the new user document, the code retrieves the created user from the database using the findById method of the User model, and selects only the fields that are necessary to be sent back in the response, excluding the password and refreshToken fields for security reasons
         "-password -refreshToken"
     )
 
@@ -70,8 +70,8 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     return res.status(201).json(
-        new ApiResponse(201, "User registered successfully", createdUser, "user registered successfully")
-    )
+        new ApiResponse(201, "User registered successfully", createdUser)
+    )   
 
 });    
 
