@@ -5,21 +5,28 @@ import {uploadOnCloudinary} from '../utils/cloudinary.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from 'jsonwebtoken';
 
-const generateAccessAndRefreshTokens =async (userId) => {
+const generateAccessAndRefreshTokens = async (userId) => {
     try {
-        const user=await User.findById(userId);
-        const accessToken=await user.generateAccessToken();
-        const refreshToken=await user.generateRefreshToken();
+        const user = await User.findById(userId);
 
-        user.refreshToken=refreshToken;
-        await user.save({validateBeforeSave: false});
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
 
-        return {accessToken, refreshToken};
-        
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
+
+        user.refreshToken = refreshToken;
+
+        await user.save({ validateBeforeSave: false });
+
+        return { accessToken, refreshToken };
+
     } catch (error) {
-        throw new ApiError(500, "something went wrong while generating access and refresh tokens")
+    console.log("TOKEN ERROR:", error); // 👈 ADD THIS
+    throw new ApiError(500, "Something went wrong while generating tokens");
     }
-}
+};
 
 const registerUser = asyncHandler(async (req, res) => {
     const {username, email, fullname, password} = req.body; //destructure the required fields from the request body, which are expected to be sent by the client when registering a new user
