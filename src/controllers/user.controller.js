@@ -42,7 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const coverImagePath = req.files?.coverImage?.[0]?.path; //access the uploaded cover image file from the request object, which is expected to be sent by the client as part of a multipart/form-data request when registering a new user. The code uses optional chaining to safely access the nested properties of the request object and retrieve the path of the uploaded cover image file
 
     if(!avatarPath){
-        throw new ApiError(400, "Avatar image is required")
+        throw new ApiError(400, "Avatar image is required!!")
     }
 
     const avatar = await uploadOnCloudinary(avatarPath);
