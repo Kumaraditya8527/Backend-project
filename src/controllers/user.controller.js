@@ -105,7 +105,7 @@ const loginUser = asyncHandler(async (req, res) => {
         "-password -refreshToken"
     )
 
-    const options = {
+    const options = { //set the options for the cookies that will be sent in the response, which include httpOnly and secure flags to enhance the security of the cookies
         httpOnly: true,
         secure:true,
     }
@@ -126,7 +126,7 @@ const logoutUser = asyncHandler(async (req, res) => {
             }
         },
         {
-            new: true
+            new: true//after updating the user's refresh token in the database to invalidate it, the code sends a response back to the client with a status of 200 OK, and clears the accessToken and refreshToken cookies by setting them to an empty value and using the same options that were used when setting the cookies during login. The response also includes a JSON object with a message indicating that the user has been logged out successfully
         }
     )
     const options = {
