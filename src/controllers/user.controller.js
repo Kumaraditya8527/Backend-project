@@ -334,13 +334,14 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
                 username: 1,
                 avatar: 1,
                 coverImage: 1,
-                subscribersCount: { $size: "$subscribers" },
-                channelsSubscribedToCount: { $size: "$subscribedTo" }
+                email: 1,
+                subscribersCount:1,
+                channelsSubscribedToCount:1
             }
         }
     ])
 
-    if(!channel.length){
+    if(!channel?.length){
         throw new ApiError(404, "Channel not found")
     }
 
